@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <h:head>
+        <title>Facelet Title</title>
+        <style>
+            *{
+                font-size: 13px;
+            }
+            .capt{
+                float: left;
+                
+            }
+        </style>
+    </h:head>
+    
+    <h:body>
+    <h:form>    
+        <p:outputLabel value="Registered Users"></p:outputLabel>
+                    <p:dataTable value="#{controller.userList}"  id="datatable" var="u" rows="5" paginator="true" 
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    <p:column headerText="Name">
+                        <h:outputLabel value="#{u.name}"></h:outputLabel>
+                    </p:column>
+                    <p:column headerText="Surname">
+                        <h:outputLabel value="#{u.surname}"></h:outputLabel>
+                    </p:column>
+                    
+                    <p:column headerText="Telefone">
+                        <h:outputLabel value="#{u.telefone}"></h:outputLabel>
+                    </p:column>
+               </p:dataTable>
+               
+           
+            
+                <p:commandButton value="New User" onclick="PF('dlg2').show();"></p:commandButton>
+            
+            <p:dialog header="New User" widgetVar="dlg2" modal="true" height="300">
+                <p:panelGrid columns="2">
+                    <h:outputLabel value="Name :*"></h:outputLabel>
+            
+                    <p:inputText value="#{controller.user.name}" required="true" requiredMessage="Name is required"></p:inputText>
+
+                    <h:outputLabel value="Surname :*"></h:outputLabel>
+
+                    <p:inputText value="#{controller.user.surname}"  required="true" requiredMessage="Surname is required"></p:inputText>
+
+                    <h:outputLabel value="Telefone :"></h:outputLabel> 
+
+                    <p:inputMask value="#{controller.user.telefone}" mask="(999) 999-9999"></p:inputMask>
+                    
+                    <p:captcha label="Captcha" />
+                   
+                    <p:commandButton value="Save" action="#{controller.saveUser()}"></p:commandButton>
+                    
+                    <h:messages globalOnly="true"></h:messages>
+                    
+                </p:panelGrid>
+                
+            </p:dialog>       
+            
+           #{controller.userList.size()}
+             
+         </h:form>
+    </h:body>
+</html>
+

@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <h:head>
+        <title>User Operations</title>
+        <style>
+            *{
+                font-size: 13px;
+            }
+            .capt{
+                float: left;
+                
+            }
+        </style>
+    </h:head>
+    
+    <h:body>
+    <h:form>    
+        <p:outputLabel value="Registered Users"></p:outputLabel>
+            <p:panel id="UserListPanel">
+                <p:dataTable value="#{controller.userList}"  id="datatable" rowKey="#{u.id}"  selection="#{controller.selectedUser}" var="u" rows="5" paginator="true" 
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    <p:column headerText="Name">
+                        <h:outputLabel value="#{u.name}"></h:outputLabel>
+                    </p:column>
+                    <p:column headerText="Surname">
+                        <h:outputLabel value="#{u.surname}"></h:outputLabel>
+                    </p:column>
+                    
+                    <p:column headerText="Telefone">
+                        <h:outputLabel value="#{u.telefone}"></h:outputLabel>
+                    </p:column>
+                     <p:column selectionMode="single"></p:column>     
+               </p:dataTable>
+            </p:panel>
+        
+        <p:remoteCommand name="UpdateUserList" update="UserListPanel" action="#{controller.getAllUsers()}"></p:remoteCommand>     
+        <p:commandButton value="New User" onclick="PF('dlg2').show();" ajax="true"></p:commandButton>
+        <p:commandButton value="Update User" icon="ui-icon-pencil" update="updatedialog" oncomplete="PF('updatedialog').show();" process="@none"></p:commandButton>
+        <p:commandButton value="Delete User" icon="ui-icon-close" onclick="PF('deletedialog').show();"  ajax="true"></p:commandButton>
+        
+        <p:dialog header="Update Window" widgetVar="updatedialog" modal="true" id="updatedialog">
+            <p:outputPanel id="selecteduserpanel">
+               <p:panelGrid columns="1" >
+                     <p:outputLabel value="#{controller.selectedUser.name}"></p:outputLabel>
+                     <p:outputLabel value="#{controller.selectedUser.surname}"></p:outputLabel>
+                     <p:outputLabel value="#{controller.selectedUser.telefone}"></p:outputLabel>
+                </p:panelGrid>
+            </p:outputPanel>
+          </p:dialog>
+        
+        <p:dialog header="Delete Window" widgetVar="deletedialog" modal="true">
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+        </p:dialog>
+  
+         <p:dialog header="New User" widgetVar="dlg2"  modal="true" height="300">
+                    <p:panelGrid columns="2" id="newuserpanel">
+                    
+                    <h:outputLabel value="Name :*"></h:outputLabel>
+                    <p:panel id="namepnl">
+                      <p:inputText value="#{controller.user.name}" id="name" required="true"  requiredMessage="Name is required"></p:inputText>
+                      <p:message for="name" />
+                    </p:panel>
+                    
+                    <h:outputLabel value="Surname :*"></h:outputLabel>
+                    <p:panel id="surnamepnl">
+                    <p:inputText value="#{controller.user.surname}" id="surname"  required="true" requiredMessage="Surname is required"></p:inputText>
+                    <p:message for="surname" />
+                   </p:panel>
+                    
+                    <h:outputLabel value="Telefone :"></h:outputLabel> 
+                    <p:panel>
+                    <p:inputMask value="#{controller.user.telefone}" mask="(999) 999-9999"></p:inputMask>
+                    </p:panel>
+                    
+                    <p:captcha label="Captcha" id="captcha" rendered="false" required="true" />
+                    <p:message for="captcha" rendered="false" /> 
+                    <p:commandButton value="Save" action="#{controller.saveUser()}" ajax="true" oncomplete="UpdateUserList();" update="newuserpanel">   
+                    </p:commandButton>
+                    
+                    <h:messages globalOnly="true"></h:messages>
+                    
+                </p:panelGrid>
+                    <p:panel id="newusermsgpanel">
+                        
+                    </p:panel>
+
+            </p:dialog>       
+            
+           #{controller.userList.size()}
+             
+         </h:form>
+    </h:body>
+</html>
+

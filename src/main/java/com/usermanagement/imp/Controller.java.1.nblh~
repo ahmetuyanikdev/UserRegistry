@@ -1,0 +1,106 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.usermanagement.imp;
+
+import com.mongodb.MongoException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.mongodb.core.MongoOperations;
+/**
+ *
+ * @author Hp
+ */
+@ManagedBean
+@SessionScoped
+public class Controller implements Serializable{
+    
+    private User user;
+    ApplicationContext ctx;
+    MongoOperations mongoOperation;
+    List<User> userList;
+    private String test;
+    public Controller(){
+        try{
+            user=new User();
+            ctx = new AnnotationConfigApplicationContext(SpringMongoConfig.class);
+            mongoOperation=(MongoOperations)ctx.getBean("mongoTemplate");
+
+            userList=new ArrayList<User>();
+            userList=findAllUsers();
+        }  
+        catch(Exception e){
+        
+        }
+    }
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
+    
+    
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
+    
+    
+    
+    public void saveUser(){
+        try{
+            
+            user.setId(UUID.randomUUID().toString());
+            if(dataValid(user)){
+                mongoOperation.insert(user);
+                userList=findAllUsers();
+            }
+        }
+        catch(MongoException e){
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+        }
+        
+    }
+    
+    public Boolean dataValid(User user){
+        
+        if(user.getName()!=null && user.getSurname()!=null && user.getName()!=null){
+            return true;
+        }
+        else{
+            return false;
+        }
+        
+    }
+    
+    public List<User> findAllUsers(){
+        return mongoOperation.findAll(User.class);
+    }
+    
+    
+}

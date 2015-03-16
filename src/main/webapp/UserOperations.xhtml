@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <h:head>
+        <title>User Operations</title>
+        <style>
+            *{
+                font-size: 13px;
+            }
+            .capt{
+                float: left;
+                
+            }
+        </style>
+    </h:head>
+    
+    <h:body>
+        <h:form id="form">    
+        <p:outputLabel value="Registered Users"></p:outputLabel>
+        <p:growl id="growl" showDetail="true"  /> 
+        <hr/>
+            <p:panel id="UserListPanel">
+                <p:dataTable value="#{controller.userList}"  id="datatable"  var="u" rows="5" paginator="true" 
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    <p:column headerText="Name">
+                        <h:outputLabel value="#{u.name}"></h:outputLabel>
+                    </p:column>
+                    <p:column headerText="Surname">
+                        <h:outputLabel value="#{u.surname}"></h:outputLabel>
+                    </p:column>
+                    
+                    <p:column headerText="Telefone">
+                        <h:outputLabel value="#{u.telefone}"></h:outputLabel>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="Edit"  icon="ui-icon-pencil" oncomplete="PF('updatedialog').show();"  ajax="true" update=":form:updatedialog">
+                            <f:setPropertyActionListener value="#{u}" target="#{controller.selectedUser}" ></f:setPropertyActionListener>
+                        </p:commandButton>
+                        
+                        <p:commandButton value="Delete" style="margin-left:10%;" icon="ui-icon-close" oncomplete="PF('deletedialog').show();" ajax="true" update=":form:deletedialog">
+                            <f:setPropertyActionListener value="#{u}" target="#{controller.selectedUser}"></f:setPropertyActionListener>
+                        </p:commandButton>
+                    </p:column>
+                          
+               </p:dataTable>
+                <p:outputLabel value="Number Of Users :"></p:outputLabel>
+                <p:outputLabel value="#{controller.userList.size()}"></p:outputLabel>
+            </p:panel>
+        
+        <p:remoteCommand name="UpdateUserList" update="UserListPanel" action="#{controller.getAllUsers()}"></p:remoteCommand>     
+       
+       
+        <p:dialog header="Update Window" widgetVar="updatedialog"  modal="true" id="updatedialog">
+           
+            <p:panelGrid columns="2" id="updatepanel">
+                <p:outputLabel value="Name :"></p:outputLabel>
+                <p:inputText value="#{controller.selectedUser.name}" id="editname"   requiredMessage="Name is required" ></p:inputText>
+                <p:outputLabel value="Surname :"></p:outputLabel>
+                <p:inputText value="#{controller.selectedUser.surname}" id="editsurname"   requiredMessage="Surname is required"></p:inputText>
+                <p:outputLabel value="Telefone :"></p:outputLabel>
+                <p:inputText value="#{controller.selectedUser.telefone}"></p:inputText>
+                <p:commandButton value="Update" global="true" update="updatepanel,updatedialogmsgpanel,growl"  oncomplete="UpdateUserList();" action="#{controller.updateUser()}"></p:commandButton>
+                
+                <p:ajaxStatus>
+                <f:facet name="start" id="statusBar1">
+                            <h:graphicImage value="https://eu1.salesforce.com/img/loading.gif"></h:graphicImage>
+                        </f:facet>
+                        <f:facet name="complete">
+                        </f:facet>
+            </p:ajaxStatus>
+            </p:panelGrid>
+            <p:panel id="updatedialogmsgpanel">
+                <h:messages rendered="false" globalOnly="true" ></h:messages>
+            </p:panel>
+          </p:dialog>
+        
+        <p:dialog header="Delete" widgetVar="deletedialog" modal="true" id="deletedialog">
+            <p:panelGrid columns="2" id="deletepanel">
+                   <p:outputLabel value="Name :"></p:outputLabel>
+                    <p:outputLabel value="#{controller.selectedUser.name}"></p:outputLabel>
+                   <p:outputLabel value="Surname :"></p:outputLabel>
+                   <p:outputLabel value="#{controller.selectedUser.surname}"></p:outputLabel>
+                   <p:outputLabel value="Telefone :"></p:outputLabel>
+                   <p:outputLabel value="#{controller.selectedUser.telefone}"></p:outputLabel>
+                   <p:commandButton value="Yes"  styleClass="ui-confirmdialog-yes"  onsuccess="PF('deletedialog').hide();" update="deletepanel,deletedialogmsgpanel,growl" oncomplete="UpdateUserList();" action="#{controller.deleteUser()}" icon="ui-icon-check" />
+                   
+                   <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"  onclick="PF('deletedialog').hide();" icon="ui-icon-close" />
+                   <p:ajaxStatus>
+                <f:facet name="start" id="statusBar1">
+                            <h:graphicImage value="https://eu1.salesforce.com/img/loading.gif"></h:graphicImage>
+                        </f:facet>
+                        <f:facet name="complete">
+                        </f:facet>
+            </p:ajaxStatus>
+            </p:panelGrid>
+            <p:panel id="deletedialogmsgpanel">
+                <h:messages rendered="false" globalOnly="true" ></h:messages>
+                
+            </p:panel>
+            
+        </p:dialog>
+        
+        
+        <p:commandButton value="New User"  style="margin-left:10%;"  oncomplete="PF('dlg2').show();" ajax="true" update="newuserdialog"></p:commandButton>
+         
+         <p:dialog id="newuserdialog" header="New User" widgetVar="dlg2" onHide="window.location.reload();"   modal="true" height="300">
+                <p:panelGrid columns="2" id="newuserpanel">
+                <h:outputLabel value="Name :*"></h:outputLabel>
+                <p:panel id="namepnl">
+                    <p:inputText value="#{controller.user.name}" id="name" placeholder="Required"    requiredMessage="Name is required"></p:inputText>
+                    <p:message for="name" />
+                </p:panel>
+
+                <h:outputLabel value="Surname :*"></h:outputLabel>
+                <p:panel id="surnamepnl">
+                    <p:inputText value="#{controller.user.surname}" id="surname" placeholder="Required"   requiredMessage="Surname is required"></p:inputText>
+                    <p:message for="surname" />
+                </p:panel>
+
+                <h:outputLabel value="Telefone :"></h:outputLabel> 
+                <p:panel>
+                    <p:inputMask value="#{controller.user.telefone}" mask="(999) 999-9999"></p:inputMask>
+                </p:panel>
+
+                <p:commandButton value="Save"  action="#{controller.saveUser()}" ajax="true" oncomplete="UpdateUserList();" update="newuserpanel,newusermsgpanel,growl">   
+                </p:commandButton>
+                
+                <p:ajaxStatus>
+                <f:facet name="start" id="statusBar1">
+                            <h:graphicImage value="https://eu1.salesforce.com/img/loading.gif"></h:graphicImage>
+                        </f:facet>
+                        <f:facet name="complete">
+                        </f:facet>
+            </p:ajaxStatus>
+
+            </p:panelGrid>
+                <p:panel id="newusermsgpanel">
+                    <h:messages rendered="false" globalOnly="true" ></h:messages>
+                </p:panel>
+
+            </p:dialog>       
+           
+          
+             
+         </h:form>
+        <script>
+            /*
+            $(document).ready(function(){
+                try{
+                 document.getElementById('form:name').value='temp'; 
+                 document.getElementById('form:surname').value='temp';
+                 document.getElementById('form:editname').value='temp';
+                 document.getElementById('form:editsurname').value='temp';
+                }
+                catch(Exception){
+                    
+                }
+        });
+            
+            function cleanOffFields(){
+                try{
+                     document.getElementById('form:name').value=null; 
+                     document.getElementById('form:surname').value=null;
+                }
+                catch(Exception){
+                    
+                }
+            }
+            function prepopulateOffFields(){
+               try{
+                   document.getElementById('form:name').value='temp';
+                   document.getElementById('form:surname').value='temp';
+               }
+               catch(Exception){
+                   
+               }
+            }
+            
+            */
+            
+        </script>
+    </h:body>
+</html>
+
