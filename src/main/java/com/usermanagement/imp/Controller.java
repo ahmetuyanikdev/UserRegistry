@@ -15,7 +15,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 /**
  *
- * @author Hp
+ * @author Ahmet Uyanik 
+ * This is the Controller Class to bind methods with the page
  */
 @ManagedBean
 @ViewScoped 

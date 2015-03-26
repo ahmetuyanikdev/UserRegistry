@@ -10,7 +10,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 /**
  *
- * @author Hp
+ * @author Ahmet Uyanik 
+ * This class is created to define attributes of user instances 
  */
 @Document
 public class User implements Serializable{

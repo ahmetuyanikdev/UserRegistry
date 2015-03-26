@@ -12,7 +12,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 /**
  *
- * @author Hp
+ * @author Ahmet Uyanik
+ * 
  */
 @Configuration
 @EnableMongoRepositories
