@@ -4,7 +4,6 @@
  */
 package com.usermanagement.imp;
 
-import java.io.Serializable;
 import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * This class is created to define attributes of user instances 
  */
 @Document
-public class User implements Serializable{
+public class User{
     @Id            
     private String Id;
     

@@ -52,7 +52,7 @@ public class Test {
         controller.setUser(user2);
         controller.setSelectedUser(user2);
         
-        
+       
         controller.getAllUsers();
         int s1 = controller.getUserList().size();
         System.out.print(controller.getUserList().size());

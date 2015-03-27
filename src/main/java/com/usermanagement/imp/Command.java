@@ -3,9 +3,8 @@
  * and open the template in the editor.
  */
 package com.usermanagement.imp;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Template;
 import java.util.List;
-
+ 
 /**
  *
  * @author Ahmet Uyanik.

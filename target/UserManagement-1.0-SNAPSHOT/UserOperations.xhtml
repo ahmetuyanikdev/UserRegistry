@@ -11,10 +11,7 @@
             *{
                 font-size: 13px;
             }
-            .capt{
-                float: left;
-                
-            }
+            
         </style>
     </h:head>
     
@@ -62,7 +59,7 @@
                 <p:outputLabel value="Surname :"></p:outputLabel>
                 <p:inputText value="#{controller.selectedUser.surname}" id="editsurname"   requiredMessage="Surname is required"></p:inputText>
                 <p:outputLabel value="Telefone :"></p:outputLabel>
-                <p:inputText value="#{controller.selectedUser.telefone}"></p:inputText>
+                <p:inputMask value="#{controller.selectedUser.telefone}" mask="(999) 999-9999"></p:inputMask>
                 <p:commandButton value="Update" global="true" update="updatepanel,updatedialogmsgpanel,growl"  oncomplete="UpdateUserList();" action="#{controller.updateUser()}"></p:commandButton>
                 
                 <p:ajaxStatus>
@@ -148,39 +145,7 @@
              
          </h:form>
         <script>
-            /*
-            $(document).ready(function(){
-                try{
-                 document.getElementById('form:name').value='temp'; 
-                 document.getElementById('form:surname').value='temp';
-                 document.getElementById('form:editname').value='temp';
-                 document.getElementById('form:editsurname').value='temp';
-                }
-                catch(Exception){
-                    
-                }
-        });
             
-            function cleanOffFields(){
-                try{
-                     document.getElementById('form:name').value=null; 
-                     document.getElementById('form:surname').value=null;
-                }
-                catch(Exception){
-                    
-                }
-            }
-            function prepopulateOffFields(){
-               try{
-                   document.getElementById('form:name').value='temp';
-                   document.getElementById('form:surname').value='temp';
-               }
-               catch(Exception){
-                   
-               }
-            }
-            
-            */
             
         </script>
     </h:body>
