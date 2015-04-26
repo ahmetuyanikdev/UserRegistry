@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.usermanagement.imp;
+package com.usermanagement.model;
 
 import java.util.UUID;
 import org.springframework.data.annotation.Id;

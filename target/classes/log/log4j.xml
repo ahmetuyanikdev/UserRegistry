@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+    <appender name="FileAppender" class="org.apache.log4j.RollingFileAppender">
+        <param name="append" value="false"></param>
+        <param name="maxFileSize" value="10MB" />
+        <param name="bufferedIO" value="true"></param>
+        <param name="fileAppend" value="true"></param>
+        <param name="immediateFlush" value="true"></param>
+        <param name="threshold" value="INFO"></param>
+        <param name="File" value="src/main/java/log/mylogfile"></param>
+         <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"></param>
+        </layout>
+    </appender>
+    
+    <appender name="ConsoleAppender" class="org.apache.log4j.ConsoleAppender">
+         <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"></param>
+        </layout>
+    </appender>
+    
+       
+        
+    
+   <logger name="com.usermanagement.imp.Controller" additivity="false">
+       <level value="INFO"/>
+       <appender-ref ref="FileAppender"/>
+       <appender-ref ref="ConsoleAppender"/>
+       
+   </logger>
+   
+    <root>
+		<level value="DEBUG" />
+		<appender-ref ref="FileAppender" />
+	</root>
+ 
+</log4j:configuration>
