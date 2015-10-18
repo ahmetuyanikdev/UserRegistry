@@ -5,7 +5,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 ">
     <bean id="UserBean" class="com.usermanagement.model.User"></bean>
-    <bean id="ConcreteCommandBean" class="com.usermanagement.imp.ConcreteCommand"></bean>
+
+    <!--<bean id="ConcreteCommandBean" class="com.usermanagement.imp.ConcreteCommand">
+
+    </bean>-->
     
     <!--
     <bean id="MongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">

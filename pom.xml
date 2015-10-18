@@ -31,6 +31,19 @@
          
        
                 <!-- Spring framework -->
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>4.1.6.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>4.1.6.RELEASE</version>
+        </dependency>
+
         <dependency>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-core</artifactId>
@@ -73,7 +86,7 @@
        <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>5.1</version> 
+            <version>5.0</version>
        </dependency> 
        
        <!-- Log4J depen -->
@@ -149,6 +162,11 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.2.11.v20150529</version>
             </plugin>
         </plugins>
     </build>

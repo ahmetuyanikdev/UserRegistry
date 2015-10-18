@@ -75,16 +75,16 @@ public class Test {
         
         controller.getAllUsers();    
         int existingUserNumber = controller.getUserList().size();
-        controller.setCmd(command);
+        controller.setconcreteCommand(command);
         controller.getAllUsers();  
         Assert.assertSame(existingUserNumber,controller.getUserList().size()); /*make sure new instance of Concrete command working*/   
        
         controller.setUser(u); /*setting user to be inserted database*/
-        controller.setCmd(mockedCommand); /*Setting mock command*/
+        controller.setconcreteCommand(mockedCommand); /*Setting mock command*/
         controller.saveUser(); /*Save operation using mocked instance of command*/
         
         User u2 = initializeUser();
-        controller.setCmd(command);
+        controller.setconcreteCommand(command);
         controller.getAllUsers();
         Assert.assertSame(existingUserNumber,controller.getUserList().size()); /*Ensuring that mocked instance will 
                                                                          not be able to do crud operations.So,saveUser

@@ -24,7 +24,7 @@ public class SpringMongoConfig {
                 //Context env = (Context) new InitialContext().lookup("java:comp/env");
                 //String server = (String)env.lookup("Server");
                 //String db = (String)env.lookup("DBName");
-		MongoTemplate mongoTemplate = new MongoTemplate(new MongoClient("localhost"),"UsersDB");
+		MongoTemplate mongoTemplate = new MongoTemplate(new MongoClient("192.168.99.100:32774"),"test");
 		return mongoTemplate;
 	} 
 }

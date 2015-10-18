@@ -10,15 +10,21 @@ import java.io.Serializable;
 import java.util.ArrayList; 
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 
 /**
@@ -26,33 +32,47 @@ import org.apache.log4j.xml.DOMConfigurator;
  * @author Ahmet Uyanik 
  * This is the Controller Class to bind methods with the page
  */
+@org.springframework.stereotype.Controller
+@EnableWebMvc
 @ManagedBean
-@ViewScoped 
+@ViewScoped
 public class Controller implements Serializable{
-    
-    private User user; // new user to insert
+
+    @Autowired
+    private User user;
+
+    @Autowired
+    private User selectedUser; 
+
+    @Autowired
+    private ConcreteCommand concreteCommand;
+
     List<User> userList;
-    private User selectedUser;
-    private ConcreteCommand cmd;
+
+
+    @PostConstruct
+    private void initialize(){
+        userList=new ArrayList<User>();
+        getAllUsers();
+    }
+    
+
     ApplicationContext context;
+
     String webmasterEmail;
+
     public static Logger log;
+
     public Controller(){
+            /*user = (User)context.getBean("UserBean");*/
+            //selectedUser = (User)context.getBean("UserBean");
+            /*concreteCommand=(ConcreteCommand)context.getBean("ConcreteCommandBean");*/
+            //context = new ClassPathXmlApplicationContext("classpath:/spring/springbeans.xml");
             
-            context = new ClassPathXmlApplicationContext("classpath:/spring/springbeans.xml");
-            user = (User)context.getBean("UserBean");
-            selectedUser = (User)context.getBean("UserBean");
-            cmd=(ConcreteCommand)context.getBean("ConcreteCommandBean");
-            
-            userList=new ArrayList<User>();
-            getAllUsers();
-           
-            
-            DOMConfigurator.configure("src/main/java/log/log4j.xml");
-     
+            /*DOMConfigurator.configure("src/main/java/log/log4j.xml");
             log=Logger.getLogger(Controller.class);
             log.debug("-----initialization----");
-            log.info("Controller.java/---- Application is started at "+new Date());
+            log.info("Controller.java/---- Application is started at "+new Date());*/
        
     }
     
@@ -65,12 +85,12 @@ public class Controller implements Serializable{
         this.selectedUser = selectedUser;
     }
 
-    public ConcreteCommand getCmd() {
-        return cmd;
+    public ConcreteCommand getconcreteCommand() {
+        return concreteCommand;
     }
 
-    public void setCmd(ConcreteCommand cmd) {
-        this.cmd = cmd;
+    public void setconcreteCommand(ConcreteCommand concreteCommand) {
+        this.concreteCommand = concreteCommand;
     }
     
     public User getUser() {
@@ -104,9 +124,9 @@ public class Controller implements Serializable{
     public void saveUser(){
         try{
             if(user.dataValidation()){
-                log.debug("---- attempt insert new user");
-                cmd.insert(user);
-                log.info("Controller.java/---- new user "+user.getName()+" "+user.getSurname()+" saved at "+new Date());
+                //log.debug("---- attempt insert new user");
+                concreteCommand.insert(user);
+                //log.info("Controller.java/---- new user "+user.getName()+" "+user.getSurname()+" saved at "+new Date());
                 getAllUsers();
                 addMessage(FacesMessage.SEVERITY_INFO,"Info" ,"New User Added");
             }
@@ -115,30 +135,30 @@ public class Controller implements Serializable{
             }
         }
         catch(MongoException e){
-            log.info("Controller.java/ Save failed for user "+user.getName()+" at :"+new Date());
-            log.error("Controller.java/---Exception occoured during save a user : "+e.getMessage().toString());   
+            //log.info("Controller.java/ Save failed for user "+user.getName()+" at :"+new Date());
+            //log.error("Controller.java/---Exception occoured during save a user : "+e.getMessage().toString());
             addMessage(FacesMessage.SEVERITY_ERROR,"Error!" ,e.getMessage());
         }
     }
     public void deleteUser(){
         try{
-            log.debug("---- attempt to delete user");
-            cmd.delete(selectedUser);
-            log.info("Controller.java/---- user "+selectedUser.getName()+" "+selectedUser.getSurname()+" deleted at "+new Date());
+            //log.debug("---- attempt to delete user");
+            concreteCommand.delete(selectedUser);
+            //log.info("Controller.java/---- user "+selectedUser.getName()+" "+selectedUser.getSurname()+" deleted at "+new Date());
             getAllUsers();
             addMessage(FacesMessage.SEVERITY_INFO,"Info" ,"User Deleted");
         }
         catch(MongoException e){
-            log.error("Controller.java/---Exception occoured during delete a user : "+e.getMessage().toString());   
+            //log.error("Controller.java/---Exception occoured during delete a user : "+e.getMessage().toString());
             addMessage(FacesMessage.SEVERITY_ERROR,"Error!" ,e.getMessage());
         }
     }
     public void updateUser(){
         try{
             if(selectedUser.dataValidation()){
-                log.debug("---- attempt to update user");
-                cmd.update(selectedUser);
-                log.info("Controller.java/---- user "+selectedUser.getName()+" "+selectedUser.getSurname()+" deleted at "+new Date());
+                //log.debug("---- attempt to update user");
+                concreteCommand.update(selectedUser);
+                //log.info("Controller.java/---- user "+selectedUser.getName()+" "+selectedUser.getSurname()+" deleted at "+new Date());
                 getAllUsers();
                 addMessage(FacesMessage.SEVERITY_INFO,"Info" ,"User Updated");
             }
@@ -147,14 +167,14 @@ public class Controller implements Serializable{
             }  
         }
         catch(MongoException e){
-             log.error("Controller.java/---Exception occoured during update a user : "+e.getMessage().toString());   
+             //log.error("Controller.java/---Exception occoured during update a user : "+e.getMessage().toString());
              addMessage(FacesMessage.SEVERITY_ERROR,"Error!" ,e.getMessage());
         }
     }
     
     public void getAllUsers(){
         userList.clear();
-        userList=cmd.get(User.class);
+        userList=concreteCommand.get(User.class);
     }
    
 }
