@@ -1,30 +1,37 @@
-package com.usermanagement.config;
+package com.usermanagement.test;
 
 import com.mongodb.MongoClient;
 import com.usermanagement.imp.ConcreteCommand;
+import com.usermanagement.imp.Controller;
 import com.usermanagement.model.User;
 import com.usermanagement.utility.Constants;
-import javafx.application.Application;
+import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.primefaces.context.ApplicationContext;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.servlet.ServletContext;
 import java.io.File;
 
-@Configuration
-@ComponentScan(basePackages="com.usermanagement.model,com.usermanagement.imp")
-@EnableWebMvc
-public class AppConfig {
+/**
+ * Created by ahmet on 19/10/15.
+ */
 
-    @Autowired
+@Configuration
+public class TestConfig {
+
     ServletContext servletContext;
+
+    TestConfig(){
+        servletContext = Mockito.mock(ServletContext.class);
+        //Mockito.when(servletContext.getInitParameter(Constants.Log4JConfigLocation)).thenReturn("WEB-INF/log4j.properties");
+        //Mockito.when(servletContext.getRealPath("")).thenReturn("/Users/ahmet/Desktop/glassfish4/glassfish/domains/domain1/applications/UserManagement-1.0-SNAPSHOT");
+    }
 
     @Bean
     User user(){
@@ -43,16 +50,16 @@ public class AppConfig {
 
     @Bean
     MongoOperations mongoOperations(MongoClient mongoClient) throws Exception{
-        return new MongoTemplate(mongoClient,Constants.MongoDbTable);
+        return Mockito.mock(MongoTemplate.class);
     }
 
     @Bean
     ConcreteCommand concreteCommand(MongoOperations mongoOperations){
-        initializeLog4j();
         ConcreteCommand concreteCommand = new ConcreteCommand();
         concreteCommand.mongoOperation = mongoOperations;
         return concreteCommand;
     }
+
 
     private void initializeLog4j(){
         String log4jConfigFile = servletContext.getInitParameter(Constants.Log4JConfigLocation);
@@ -60,5 +67,18 @@ public class AppConfig {
         PropertyConfigurator.configure(fullPath);
 
     }
+
+    @Bean
+    Controller controller(User user,ConcreteCommand concreteCommand){
+        Controller controller = new Controller();
+        controller.log = Mockito.mock(Logger.class);
+        controller.setConcreteCommand(concreteCommand);
+        controller.setUser(user);
+        controller.setSelectedUser(user);
+
+        return controller;
+    }
+
+
 
 }

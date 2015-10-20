@@ -24,9 +24,15 @@
         <param-name>contextClass</param-name>
         <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
     </context-param>
+
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>com.usermanagement.config.AppConfig</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>WEB-INF/log4j.properties</param-value>
     </context-param>
 
     <listener>
@@ -53,21 +59,9 @@
             30
         </session-timeout>
     </session-config>
+
     <welcome-file-list>
         <welcome-file>faces/UserOperations.xhtml</welcome-file>
     </welcome-file-list>
-    
-     <env-entry>
-        <env-entry-name>Server</env-entry-name>
-        <env-entry-type>Java.lang.String</env-entry-type>
-        <env-entry-value>localhost</env-entry-value>
-    </env-entry>
-    
-    <env-entry>
-        <env-entry-name>DBName</env-entry-name>
-        <env-entry-type>Java.lang.String</env-entry-type>
-        <env-entry-value>UsersDB</env-entry-value>
-    </env-entry>
-    
     
 </web-app>

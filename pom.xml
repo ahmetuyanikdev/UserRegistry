@@ -28,10 +28,8 @@
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
         </dependency>
-         
-       
-                <!-- Spring framework -->
 
+                <!-- Spring framework -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
@@ -56,12 +54,18 @@
                     <version>4.1.6.RELEASE</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.1.6.RELEASE</version>
+        </dependency>
+
         <!-- mongodb java driver -->
-            <dependency>
-                    <groupId>org.mongodb</groupId>
-                    <artifactId>mongo-java-driver</artifactId>
-                    <version>2.13.0</version>
-            </dependency>
+        <dependency>
+                <groupId>org.mongodb</groupId>
+                <artifactId>mongo-java-driver</artifactId>
+                <version>2.13.0</version>
+        </dependency>
 
         <!-- Spring data mongodb -->
         <dependency>
@@ -81,33 +85,22 @@
             <artifactId>jsf-api</artifactId>
             <version>2.2.10</version>
         </dependency>
-        <!-- Prime Faces Dependency--> 
-       
+
+        <!-- Prime Faces -->
        <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>5.0</version>
        </dependency> 
        
-       <!-- Log4J depen -->
-       <dependency>
+       <!-- Log4J  -->
+        <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.13</version>
+            <version>1.2.17</version>
         </dependency>
-        
-        <dependency>
-           <groupId>org.slf4j</groupId>
-           <artifactId>slf4j-api</artifactId>
-           <version>1.5.6</version>
-           <type>jar</type>
-        </dependency>
-        <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
-                <version>1.5.6</version>
-        </dependency>
-        
+
+        <!--Mockito-->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
